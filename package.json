@@ -1,5 +1,5 @@
 {
-  "name": "vista-encuestas",
+  "name": "poll-maker",
   "version": "1.0.0",
   "description": "Presentación gráfica de encuestas",
   "main": "app.js",
@@ -13,5 +13,6 @@
     "jade": "^1.11.0",
     "minimist": "^1.1.1",
     "mongoose": "^4.0.7"
-  }
+  },
+  "repository": "https://github.com/dataquito/poll-maker"
 }
