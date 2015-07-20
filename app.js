@@ -6,6 +6,19 @@
  * @module app
  */
 var express = require('express');
+var mongoose = require('mongoose');
+var config = require('./config');
+
+// Attempt database connection
+mongoose.connect(config.db_address);
+var db = mongoose.connection;
+
+// If no connection can be made, abort
+db.on('error', function() {
+  console.error('Failed database connection attempt at ', config.db_address);
+  process.exit(1);
+});
+
 var app = express();
 
 // Configure template engine
@@ -16,14 +29,9 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
-var port = Number(process.argv[2]);
-
-if (isNaN(port) || port === 0) {
-  console.error('Please provide a valid port number');
-  process.exit(1);
-}
-
-var server = app.listen(port, function() {
-  var host = server.address().address;
-  console.log('Listening on http://%s:%d', host, port);
+db.once('open', function(callback) {
+  var server = app.listen(config.port, function() {
+    var host = server.address().address;
+    console.log('Listening on http://%s:%d', host, config.port);
+  });
 });
