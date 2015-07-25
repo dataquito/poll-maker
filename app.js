@@ -10,7 +10,6 @@ var mongoose = require('mongoose');
 var config = require('./config');
 
 // Attempt database connection
-mongoose.connect(config.db_address);
 var db = mongoose.connection;
 
 // If no connection can be made, abort
@@ -35,3 +34,5 @@ db.once('open', function(callback) {
     console.log('Listening on http://%s:%d', host, config.port);
   });
 });
+
+module.exports = app;
