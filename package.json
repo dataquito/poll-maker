@@ -4,7 +4,8 @@
   "description": "Presentación gráfica de encuestas",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "NODE_ENV=test node_modules/.bin/mocha"
   },
   "author": "",
   "license": "MIT",
@@ -14,5 +15,10 @@
     "minimist": "^1.1.1",
     "mongoose": "^4.0.7"
   },
-  "repository": "https://github.com/dataquito/poll-maker"
+  "repository": "https://github.com/dataquito/poll-maker",
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "should": "^7.0.2",
+    "supertest": "^1.0.1"
+  }
 }
