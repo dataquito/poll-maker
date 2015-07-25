@@ -1,0 +1,26 @@
+web:
+  build: .
+  links:
+    - mongo
+  ports:
+    - "8080:8080"
+  volumes:
+    - .:/application
+  working_dir: /application
+  command: 'npm start'
+  environment:
+    NODE_ENV: development
+
+test:
+  build: .
+  links:
+    - mongo
+  volumes:
+    - .:/application
+  working_dir: /application
+  command: 'npm test'
+  environment:
+    NODE_ENV: test
+
+mongo:
+  image: mongo
