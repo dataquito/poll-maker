@@ -13,7 +13,7 @@
 var argv = require('minimist')(process.argv.slice(2));
 
 // Extract values by priorities
-var port = Number(argv.port || argv.p || process.env.HTTP_PORT);
+var port = Number(argv.port || argv.p || process.env.HTTP_PORT || '8080');
 var db_address = argv['db-address'] || process.env.DB_ADDRESS;
 
 if (db_address === '' || db_address === undefined) {
