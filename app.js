@@ -11,7 +11,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
-var routes = require('./routes');
+var polls = require('./routes/polls');
 
 // Attempt database connection
 var db = mongoose.connection;
@@ -35,7 +35,7 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
-routes.register(app);
+app.use('/poll', polls);
 
 db.once('open', function(callback) {
   var server = app.listen(config.port, function() {
