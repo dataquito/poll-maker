@@ -5,9 +5,13 @@
  * as the first argument in the command line.
  * @module app
  */
+'use strict';
+
 var express = require('express');
+var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
+var routes = require('./routes');
 
 // Attempt database connection
 var db = mongoose.connection;
@@ -20,6 +24,9 @@ db.on('error', function() {
 
 var app = express();
 
+// Configure middlewares
+app.use(bodyParser.urlencoded({ extended: false }));
+
 // Configure template engine
 app.set('view engine', 'jade');
 
@@ -27,6 +34,8 @@ app.set('view engine', 'jade');
 app.get('/', function(req, res) {
   res.render('index');
 });
+
+routes.register(app);
 
 db.once('open', function(callback) {
   var server = app.listen(config.port, function() {
