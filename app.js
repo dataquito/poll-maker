@@ -12,6 +12,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
 var polls = require('./routes/polls');
+var questions = require('./routes/questions');
 
 // Attempt database connection
 var db = mongoose.connection;
@@ -36,6 +37,7 @@ app.get('/', function(req, res) {
 });
 
 app.use('/poll', polls);
+app.use('/question', questions);
 
 db.once('open', function(callback) {
   var server = app.listen(config.port, function() {
