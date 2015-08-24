@@ -7,7 +7,7 @@ web:
   volumes:
     - .:/application
   working_dir: /application
-  command: 'npm start'
+  command: bash -c 'npm install && npm start'
   environment:
     NODE_ENV: development
 
@@ -18,7 +18,7 @@ test:
   volumes:
     - .:/application
   working_dir: /application
-  command: 'npm test'
+  command: bash -c 'npm install && npm test'
   environment:
     NODE_ENV: test
 
