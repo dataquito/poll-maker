@@ -8,7 +8,6 @@
 'use strict';
 
 var express = require('express');
-var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
 var polls = require('./routes/polls');
@@ -26,7 +25,6 @@ db.on('error', function() {
 var app = express();
 
 // Configure middlewares
-app.use(bodyParser.urlencoded({ extended: false }));
 
 // Configure template engine
 app.set('view engine', 'jade');
