@@ -14,7 +14,8 @@
     "express": "^4.13.1",
     "jade": "^1.11.0",
     "minimist": "^1.1.1",
-    "mongoose": "^4.0.7"
+    "mongoose": "^4.0.7",
+    "qs": "^5.0.0"
   },
   "repository": "https://github.com/dataquito/poll-maker",
   "devDependencies": {
