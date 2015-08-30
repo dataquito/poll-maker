@@ -3,8 +3,16 @@
 var request = require('supertest');
 var app = require('../app');
 var expect = require('chai').expect;
+var Question = require('../models/question');
 
 describe('/question', function() {
+
+  afterEach(function (done) {
+    Question.remove({}, function(err) {
+      done(); 
+    }); 
+  });
+
   it('should return bad request trying to safe question without answer data type', function(done) {
     var question = {
       'question': 'test'
