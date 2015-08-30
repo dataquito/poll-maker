@@ -24,8 +24,6 @@ db.on('error', function() {
 
 var app = express();
 
-// Configure middlewares
-
 // Configure template engine
 app.set('view engine', 'jade');
 
