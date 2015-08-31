@@ -19,7 +19,6 @@ describe('/question', function() {
     };
     request(app)
       .post('/question')
-      .set('Content-Type', 'application/x-www-form-urlencoded')
       .send(question)
       .expect(400, done)
   });
@@ -31,7 +30,6 @@ describe('/question', function() {
     };
     request(app)
       .post('/question')
-      .set('Content-Type', 'application/x-www-form-urlencoded')
       .send(question)
       .expect(400, done)
   });
@@ -43,7 +41,6 @@ describe('/question', function() {
     };
     request(app)
       .post('/question')
-      .set('Content-Type', 'application/x-www-form-urlencoded')
       .send(question)
       .expect(201)
       .end(function(err, res) {
@@ -61,7 +58,6 @@ describe('/question', function() {
     };
     request(app)
       .post('/question')
-      .set('Content-Type', 'application/x-www-form-urlencoded')
       .send(question)
       .expect(201)
       .end(function(err, res) {
@@ -76,11 +72,13 @@ describe('/question', function() {
     var question = {
       'question':'test',
       'answerDataType': 'String',
-      'answerOptions': '0=m,1=f'
+      'answerOptions': {
+        '0': 'm',
+        '1': 'f'
+      }
     };
     request(app)
       .post('/question')
-      .set('Content-Type', 'application/x-www-form-urlencoded')
       .send(question)
       .expect(201)
       .end(function(err, res) {
@@ -105,8 +103,7 @@ describe('/question', function() {
 
     request(app)
       .post('/question')
-      .set('Content-Type', 'application/x-www-form-urlencoded')
-      .send(question)
+      .send(relatedQuestion)
       .expect(201)
 
     request(app)
