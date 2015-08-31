@@ -91,32 +91,49 @@ describe('/question', function() {
 
   it('should create question with related question', function(done) {
     var relatedQuestion = {
-      'question': 'related question',
+      'question': 'test2',
       'answerDataType': 'String',
     };
 
     var question = {
       'question': 'test',
       'answerDataType': 'String',
-      'relatedQuestion': 'related question'
+      'relatedQuestion': 'test2'
     };
 
     request(app)
       .post('/question')
       .send(relatedQuestion)
       .expect(201)
-
-    request(app)
-      .post('/question')
-      .set('Content-Type', 'application/x-www-form-urlencoded')
-      .send(question)
-      .expect(201)
       .end(function(err, res) {
-        expect(res.body.question).to.equal('test');
-        expect(res.body.answerDescription.answerDataType).to.equal('String');
-        expect(res.body.answerDescription.relatedQuestion).to.deep.equal({ question: 'related question', answerDescription: {answerDataType: 'String'} });
-        done();
+        request(app)
+          .post('/question')
+          .send(question)
+          .expect(201)
+          .end(function(err, res) {
+            expect(res.body.question).to.equal('test');
+            expect(res.body.answerDescription.answerDataType).to.equal('String');
+            expect(res.body.answerDescription.relatedQuestion.question).to.equal('test2');
+            expect(res.body.answerDescription.relatedQuestion.answerDescription.answerDataType).to.equal('String');
+            done();
+          })
       });
   });
+
+  it('should fail if related question does not exist', function(done) {
+    var question = {
+      'question': 'test',
+      'answerDataType': 'String',
+      'relatedQuestion': 'test2'
+    } 
+    request(app)
+      .post('/question')
+      .send(question)
+      .expect(404)
+      .end(function(err, res) {
+        expect(res.body.error).to.equal('Related question test2 not found');
+        done();
+      });
+  })
 
 });
