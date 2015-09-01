@@ -79,11 +79,10 @@ describe('poll route handler', function() {
       var id = poll._id.toString();
       request(app)
         .del('/poll/' + id)
-        .expect(200)
+        .expect(204)
         .end(function(err, res) {
           if (err) return done(err);
-          res.body.should.have.property('_id', id);
-          res.body.should.have.property('questions', [1, 2, 3]);
+          res.body.should.be.empty();
           shouldNotExist(id);
         });
     });
