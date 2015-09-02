@@ -50,6 +50,23 @@ describe('/question', function() {
       });
   });
 
+  it('should return bad request if question already exists', function(done) {
+    var question = {
+      'question':'test',
+      'answerDataType': 'String' 
+    };
+    request(app)
+      .post('/question')
+      .send(question)
+      .expect(201)
+      .end(function(err, res) {
+        request(app)
+          .post('/question')
+          .send(question)
+          .expect(400, done);
+      });
+  });
+
   it('should create question with comments', function(done) {
     var question = {
       'question':'test',
