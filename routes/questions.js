@@ -8,46 +8,30 @@ var Question = require('../models/question');
 
 router.route('/')
   .post(parseUrlencoded, function(req, res) {
-    var q = new Question;
-    var question = req.body.question;
-    var answerDataType = req.body.answerDataType;
-    var answerComment = req.body.answerComment;
-    var answerOptions = req.body.answerOptions;
-    var relatedQuestion = req.body.relatedQuestion;
-    if (question && answerDataType) {
-      q.question = question;
-      q.answerDescription.answerDataType = answerDataType;
-      if (answerComment) {
-        q.answerDescription.answerComment = answerComment;
-      }
-      if (answerOptions) {
-        q.answerDescription.answerOptions = answerOptions;
-      }
-      if (relatedQuestion) {
-        Question.findOne({'question': relatedQuestion}, function(err, rq) {
-          if (rq === null) {
-            res.status(404);
-            res.send({'error': 'Related question ' + relatedQuestion + ' not found'});
-          } else {
-            q.answerDescription.relatedQuestion = rq; 
-            q.save(function (err, question) {
-              if (err) return console.error(err);
-              res.status(201);
-              res.send(question);
-            });
-          }
-        });
-      }
-      if (!relatedQuestion) {
-        q.save(function (err, question) {
-          if (err) return console.error(err);
-          res.status(201);
-          res.send(question);
-        });
-      }
+    var question = new Question;
+    question.question = req.body.question;
+    question.answerDescription.answerDataType = req.body.answerDataType;
+    question.answerDescription.answerComment = req.body.answerComment;
+    question.answerDescription.answerOptions = req.body.answerOptions;
+    if (req.body.relatedQuestion) {
+      Question.findOne({'question': req.body.relatedQuestion}, function(err, relatedQuestion) {
+        if (err) return res.status(500).send(err);
+        if (relatedQuestion === null) {
+          res.status(404);
+          res.send({'error': 'Related question ' + req.body.relatedQuestion + ' not found'});
+        } else {
+          question.answerDescription.relatedQuestion = relatedQuestion; 
+          question.save(function (err, question) {
+            if (err) return res.status(500).send(err);
+            res.status(201).send(question);
+          });
+        }
+      });
     } else {
-      res.status(400);
-      res.send('error');
+      question.save(function (err, question) {
+        if (err) return res.status(400).send(err);
+        res.status(201).send(question);
+      });
     }
   });
 
