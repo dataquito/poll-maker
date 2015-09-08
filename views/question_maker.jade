@@ -1,0 +1,39 @@
+html
+  head
+    title='Question Maker'
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+  body
+    div.container
+      form
+        legend
+          | Make Question
+        input(type="text" class="form-control" name="question" placeholder="Question" required autofocus)
+        input(type="text" class="form-control" name="answerDescription" placeholder="Answer Type" required autofocus)
+        button(class="btn btn-lg btn-primary btn-block" type="submit")
+          | send
+    script.
+      $('form').on('submit', function(e) {
+        console.log('submit');
+        e.preventDefault();
+        var form = $(this);
+        var questionData = {
+          question: form.find( "input[name='question']" ).val(),
+          answerDataType: form.find( "input[name='answerDescription']" ).val() 
+        };
+        $.ajax({
+          type:'post', 
+          url: '/question', 
+          data: JSON.stringify(questionData), 
+          dataType:'json',
+          contentType: "application/json; charset=utf-8"
+        })
+        .done(function(data) {
+          alert('Question created');
+          form.trigger('reset');
+        })
+        .fail(function() {
+          alert( "error" );
+        })
+      });
