@@ -35,4 +35,9 @@ router.route('/')
     }
   });
 
+router.route('/question_maker')
+  .get(function(req, res) {
+    res.render('question_maker') 
+  })
+
 module.exports = router;
