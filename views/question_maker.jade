@@ -13,11 +13,18 @@ html
         input(type="text" class="form-control" name="answerDescription" placeholder="Answer Type" required autofocus)
         input(type="text" class="form-control" name="answerComment" placeholder="Answer Commet" autofocus)
         input(type="text" class="form-control" name="relatedQuestion" placeholder="Related Question" autofocus)
-        input(type="text" class="form-control" name="answerOptionKeys" placeholder="Answer option key")
-        input(type="text" class="form-control" name="answerOptionValues" placeholder="Answer option value")
+        div(id="answerOptions")
+          input(type="text" class="form-control" name="answerOptionKeys" placeholder="Answer option key")
+          input(type="text" class="form-control" name="answerOptionValues" placeholder="Answer option value")
+        button(class="btn btn-sm btn-primary" type="button" id="questionOptionAdder")
+          | Add Question Option
         button(class="btn btn-lg btn-primary btn-block" type="submit")
           | send
     script.
+      $('#questionOptionAdder').on('click', function(e) {
+        $('#answerOptions').append('<input type="text" name="answerOptionKeys" placeholder="Answer option key" class="form-control">');
+        $('#answerOptions').append('<input type="text" name="answerOptionValues" placeholder="Answer option value" class="form-control">');
+      });
       $('form').on('submit', function(e) {
         e.preventDefault();
         var form = $(this);
