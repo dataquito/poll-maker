@@ -28,23 +28,44 @@ html
       $('form').on('submit', function(e) {
         e.preventDefault();
         var form = $(this);
-        var answerOptionsKeys = form.find("input[name='answerOptionKeys']").serializeArray();
-        var answerOptionsValues = form.find("input[name='answerOptionValues']").serializeArray();
+        var answerOptionsKeys = [];
+        $.each( form.find("input[name='answerOptionKeys']").serializeArray(), function( i, field ) {
+          console.log(field.value);
+          if ( field.value !== '' ) {
+            answerOptionsKeys.push( field.value );
+          }
+        });
+        var answerOptionsValues = [];
+        $.each( form.find("input[name='answerOptionValues']").serializeArray(), function( i, field ) {
+          console.log(field.value);
+          if ( field.value !== '' ) {
+            answerOptionsValues.push( field.value );
+          }
+        });
+        console.log(answerOptionsKeys);
+        console.log(answerOptionsValues);
+        var answerOptions = {};
         if (answerOptionsKeys && answerOptionsValues) {
-          var answerOptions = {};
-          for(var i in answerOptionsKeys) {
-            var k = answerOptionsKeys[i]['value'];
-            var v = answerOptionsValues[i]['value'];
+          console.log('entered');
+          for(var i=0; i < answerOptionsKeys.length; i++) {
+            var k = answerOptionsKeys[i];
+            var v = answerOptionsValues[i];
             answerOptions[k] = v;
           }
         }
-        var questionData = {
-          question: form.find( "input[name='question']" ).val(),
-          answerDataType: form.find( "input[name='answerDescription']" ).val(),
-          answerComment: form.find( "input[name='answerComment']" ).val(),
-          relatedQuestion: form.find( "input[name='relatedQuestion']" ).val(),
-          answerOptions: answerOptions
-        };
+        var questionData = {};
+        questionData.question = form.find( "input[name='question']" ).val();
+        questionData.answerDataType = form.find( "input[name='answerDescription']" ).val();
+        if (form.find( "input[name='answerComment']" ).val() !== '') {
+          questionData.answerComment = form.find( "input[name='answerComment']" ).val();
+        }
+        if (form.find( "input[name='relatedQuestion']" ).val() !== '') {
+          questionData.relatedQuestion = form.find( "input[name='relatedQuestion']" ).val();
+        }
+        console.log(answerOptions);
+        if (answerOptions !== {}) {
+          questionData.answerOptions = answerOptions;
+        }
         $.ajax({
           type:'post', 
           url: '/question', 
@@ -54,6 +75,7 @@ html
         })
         .done(function(data) {
           alert('Question created');
+          console.log(data);
           form.trigger('reset');
         })
         .fail(function() {
