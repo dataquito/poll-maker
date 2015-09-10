@@ -151,6 +151,12 @@ describe('/question', function() {
         expect(res.body.error).to.equal('Related question test2 not found');
         done();
       });
-  })
+  });
+
+  it('should check if question maker exists', function(done) {
+    request(app)
+      .get('/question/question_maker')
+      .expect(200, done);
+  });
 
 });
