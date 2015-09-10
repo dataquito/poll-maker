@@ -30,23 +30,18 @@ html
         var form = $(this);
         var answerOptionsKeys = [];
         $.each( form.find("input[name='answerOptionKeys']").serializeArray(), function( i, field ) {
-          console.log(field.value);
           if ( field.value !== '' ) {
             answerOptionsKeys.push( field.value );
           }
         });
         var answerOptionsValues = [];
         $.each( form.find("input[name='answerOptionValues']").serializeArray(), function( i, field ) {
-          console.log(field.value);
           if ( field.value !== '' ) {
             answerOptionsValues.push( field.value );
           }
         });
-        console.log(answerOptionsKeys);
-        console.log(answerOptionsValues);
         var answerOptions = {};
         if (answerOptionsKeys && answerOptionsValues) {
-          console.log('entered');
           for(var i=0; i < answerOptionsKeys.length; i++) {
             var k = answerOptionsKeys[i];
             var v = answerOptionsValues[i];
@@ -62,7 +57,6 @@ html
         if (form.find( "input[name='relatedQuestion']" ).val() !== '') {
           questionData.relatedQuestion = form.find( "input[name='relatedQuestion']" ).val();
         }
-        console.log(answerOptions);
         if (answerOptions !== {}) {
           questionData.answerOptions = answerOptions;
         }
@@ -75,7 +69,6 @@ html
         })
         .done(function(data) {
           alert('Question created');
-          console.log(data);
           form.trigger('reset');
         })
         .fail(function() {
