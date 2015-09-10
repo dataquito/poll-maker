@@ -10,7 +10,11 @@ html
         legend
           | Make Question
         input(type="text" class="form-control" name="question" placeholder="Question" required autofocus)
-        input(type="text" class="form-control" name="answerDescription" placeholder="Answer Type" required autofocus)
+        label Answer Data Type:
+        select(class="form-control" name="answerDataType" required autofocus)
+          option String
+          option Integer
+          option Float
         input(type="text" class="form-control" name="answerComment" placeholder="Answer Commet" autofocus)
         input(type="text" class="form-control" name="relatedQuestion" placeholder="Related Question" autofocus)
         div(id="answerOptions")
@@ -50,7 +54,7 @@ html
         }
         var questionData = {};
         questionData.question = form.find( "input[name='question']" ).val();
-        questionData.answerDataType = form.find( "input[name='answerDescription']" ).val();
+        questionData.answerDataType = form.find( "select[name='answerDataType']" ).val();
         if (form.find( "input[name='answerComment']" ).val() !== '') {
           questionData.answerComment = form.find( "input[name='answerComment']" ).val();
         }
