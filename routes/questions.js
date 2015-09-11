@@ -33,6 +33,11 @@ router.route('/')
         res.status(201).send(question);
       });
     }
+  })
+  .get(function (req, res) {
+    Question.find({}, function(err,questions) {
+      res.send(questions);
+    }) 
   });
 
 router.route('/question_maker')
