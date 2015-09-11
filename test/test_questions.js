@@ -50,6 +50,12 @@ describe('/question', function() {
       });
   });
 
+  it('should give list of questions', function(done) {
+    request(app)
+      .get('/question')
+      .expect(200, done)
+  });
+
   it('should return bad request if question already exists', function(done) {
     var question = {
       'question':'test',
