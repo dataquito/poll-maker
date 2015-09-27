@@ -20,7 +20,7 @@ router.route('/')
           res.status(404);
           res.send({'error': 'Related question ' + req.body.relatedQuestion + ' not found'});
         } else {
-          question.answerDescription.relatedQuestion = relatedQuestion; 
+          question.answerDescription.relatedQuestion = relatedQuestion;
           question.save(function (err, question) {
             if (err) return res.status(500).send(err);
             res.status(201).send(question);
@@ -37,12 +37,25 @@ router.route('/')
   .get(function (req, res) {
     Question.find({}, function(err,questions) {
       res.send(questions);
-    }) 
+    })
   });
 
 router.route('/question_maker')
   .get(function(req, res) {
-    res.render('question_maker') 
-  })
+    res.render('question_maker')
+  });
+
+router.route('/:question_id')
+  .get(function (req, res) {
+    Question.findById(req.params.question_id, function (err, question) {
+      if (err) {
+        res.status(500).send({'error': 'Error fetching Question'});
+      } else if (!question) {
+        res.status(404).send({'error': 'Question not found'});
+      } else {
+        res.send(question);
+      }
+    })
+  });
 
 module.exports = router;
