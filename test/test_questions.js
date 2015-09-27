@@ -9,11 +9,11 @@ describe('/question', function() {
 
   afterEach(function (done) {
     Question.remove({}, function(err) {
-      done(); 
-    }); 
+      done();
+    });
   });
 
-  it('should return bad request trying to safe question without answer data type', function(done) {
+  it('should return bad request trying to save question without answer data type property', function(done) {
     var question = {
       'question': 'test'
     };
@@ -23,7 +23,7 @@ describe('/question', function() {
       .expect(400, done)
   });
 
-  it('should return bad request trying to safe question with empty answer data type', function(done) {
+  it('should return bad request trying to save question with empty answer data type', function(done) {
     var question = {
       'question': 'test',
       'answerDataType': ''
@@ -37,7 +37,7 @@ describe('/question', function() {
   it('should create question', function(done) {
     var question = {
       'question':'test',
-      'answerDataType': 'String' 
+      'answerDataType': 'String'
     };
     request(app)
       .post('/question')
@@ -59,7 +59,7 @@ describe('/question', function() {
   it('should return bad request if question already exists', function(done) {
     var question = {
       'question':'test',
-      'answerDataType': 'String' 
+      'answerDataType': 'String'
     };
     request(app)
       .post('/question')
@@ -148,7 +148,7 @@ describe('/question', function() {
       'question': 'test',
       'answerDataType': 'String',
       'relatedQuestion': 'test2'
-    } 
+    }
     request(app)
       .post('/question')
       .send(question)
