@@ -50,6 +50,43 @@ describe('/question', function() {
       });
   });
 
+  it('should find question', function(done) {
+    var question = {
+      'question': 'test',
+      'answerDataType': 'String'
+    };
+    request(app)
+      .post('/question')
+      .send(question)
+      .expect(201)
+      .end(function(err, res) {
+        var question_id = res.body._id;
+        request(app)
+          .get('/question/' + question_id)
+          .expect(200, done);
+      });
+  });
+
+  it('should have error when fetching question', function(done) {
+    request(app)
+      .get('/question/asdf')
+      .expect(500)
+      .end(function(err, res) {
+        expect(res.body.error).to.deep.equal('Error fetching Question');
+        done();
+      })
+  });
+
+  it('should not find question', function(done) {
+    request(app)
+      .get('/question/55f2505f40fe7b0d00832000')
+      .expect(404)
+      .end(function(err, res) {
+        expect(res.body.error).to.deep.equal('Question not found');
+        done();
+      })
+  });
+
   it('should give list of questions', function(done) {
     request(app)
       .get('/question')
