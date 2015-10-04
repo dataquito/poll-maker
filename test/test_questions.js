@@ -202,4 +202,42 @@ describe('/question', function() {
       .expect(200, done);
   });
 
+  it('can destroy a question', function(done) {
+    var q = new Question({
+      'question':'test',
+      'answerDescription': {
+        'answerDataType': 'String'
+      }
+    });
+
+    function shouldNotExist(id) {
+      Question.findOne({_id: id})
+      .then(function(question) {
+        if (question) {
+          done(new Error("Object still exists"));
+        } else {
+          done();
+        }
+      });
+    }
+
+    q.save(function(err, question) {
+      var id = question._id.toString();
+      request(app)
+      .del('/question/' + id)
+      .expect(204)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.body.should.be.empty();
+        shouldNotExist(id);
+      });
+    });
+  });
+
+  it('cannot delete a non existing question', function(done) {
+    request(app)
+    .del('/poll/nonexistingobviously')
+    .expect(404, done);
+  });
+
 });

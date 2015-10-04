@@ -5,6 +5,8 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.json();
 var Question = require('../models/question');
+var notFound = require('./helpers').notFound.bind(null, 'Question');
+var noContent = require('./helpers').noContent;
 
 router.route('/')
   .post(parseUrlencoded, function(req, res) {
@@ -55,6 +57,19 @@ router.route('/:question_id')
       } else {
         res.send(question);
       }
+    })
+  })
+  .delete(function (req, res) {
+    var id = req.params.question_id;
+    Question.findOne({_id: id})
+    .then(function(question) {
+      return question.remove();
+    })
+    .catch(notFound.bind(null, id, res))
+    .then(noContent.bind(null, res))
+    .catch(function() {
+      res.status(500)
+      .send({error: "Could not delete question '" + id + "'"});
     })
   });
 
