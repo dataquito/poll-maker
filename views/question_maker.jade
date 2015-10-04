@@ -1,0 +1,82 @@
+html
+  head
+    title='Question Maker'
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+  body
+    div.container
+      form
+        legend
+          | Make Question
+        input(type="text" class="form-control" name="question" placeholder="Question" required autofocus)
+        label Answer Data Type:
+        select(class="form-control" name="answerDataType" required autofocus)
+          option String
+          option Integer
+          option Float
+        input(type="text" class="form-control" name="answerComment" placeholder="Answer Commet" autofocus)
+        input(type="text" class="form-control" name="relatedQuestion" placeholder="Related Question" autofocus)
+        label Answer options:
+        div(id="answerOptions")
+          input(type="text" class="form-control" name="answerOptionKeys" placeholder="Answer option key")
+          input(type="text" class="form-control" name="answerOptionValues" placeholder="Answer option value")
+        button(class="btn btn-sm btn-primary" type="button" id="questionOptionAdder")
+          | Add Answer Option
+        button(class="btn btn-lg btn-primary btn-block" type="submit")
+          | send
+    script.
+      $('#questionOptionAdder').on('click', function(e) {
+        $('#answerOptions').append('<input type="text" name="answerOptionKeys" placeholder="Answer option key" class="form-control">');
+        $('#answerOptions').append('<input type="text" name="answerOptionValues" placeholder="Answer option value" class="form-control">');
+      });
+      $('form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var answerOptionsKeys = [];
+        $.each( form.find("input[name='answerOptionKeys']").serializeArray(), function( i, field ) {
+          if ( field.value !== '' ) {
+            answerOptionsKeys.push( field.value );
+          }
+        });
+        var answerOptionsValues = [];
+        $.each( form.find("input[name='answerOptionValues']").serializeArray(), function( i, field ) {
+          if ( field.value !== '' ) {
+            answerOptionsValues.push( field.value );
+          }
+        });
+        var answerOptions = {};
+        if (answerOptionsKeys && answerOptionsValues) {
+          for(var i=0; i < answerOptionsKeys.length; i++) {
+            var k = answerOptionsKeys[i];
+            var v = answerOptionsValues[i];
+            answerOptions[k] = v;
+          }
+        }
+        var questionData = {};
+        questionData.question = form.find( "input[name='question']" ).val();
+        questionData.answerDataType = form.find( "select[name='answerDataType']" ).val();
+        if (form.find( "input[name='answerComment']" ).val() !== '') {
+          questionData.answerComment = form.find( "input[name='answerComment']" ).val();
+        }
+        if (form.find( "input[name='relatedQuestion']" ).val() !== '') {
+          questionData.relatedQuestion = form.find( "input[name='relatedQuestion']" ).val();
+        }
+        if (answerOptions !== {}) {
+          questionData.answerOptions = answerOptions;
+        }
+        $.ajax({
+          type:'post', 
+          url: '/question', 
+          data: JSON.stringify(questionData), 
+          dataType:'json',
+          contentType: "application/json; charset=utf-8"
+        })
+        .done(function(data) {
+          alert('Question created');
+          form.trigger('reset');
+        })
+        .fail(function() {
+          alert( "error" );
+        })
+      });
