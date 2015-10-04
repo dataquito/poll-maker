@@ -8,7 +8,9 @@ var Poll = require('../models/poll');
 
 describe('poll route handler', function() {
   before(function (done) {
-    mongoose.connection.db.dropDatabase(done);
+    Poll.remove({}, function(err) {
+      err ? done(err): done();
+    });
   });
 
   it('responds successfuly to the listing route', function(done) {
